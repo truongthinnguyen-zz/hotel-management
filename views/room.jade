@@ -1,0 +1,88 @@
+.container
+    .content
+        header.page-header
+           h1 Dua Leo
+                small.subtitle  Hotel
+        .row
+            article.col-md-8
+                - if (errors.length)
+                    - errors.forEach(function(error){
+                        .alert.alert-danger(role="alert")= error
+                    - })
+                - if (messages.length)
+                    - messages.forEach(function(message){
+                        .alert.alert-success(role="alert")= message
+                    - })
+
+                - if (doc){
+                h2 Edit room
+                form(action='/room/#{doc._id}/edit', method='POST')
+                    .form-group
+                        label(for='title') Title
+                        input#title.form-control(type='text', name="title", placeholder='Title', value="#{doc.title}", autocomplete="off")
+
+                    button.btn.btn-primary(type='submit') Save
+                    button.btn(type="reset") Cancel
+                - } else {
+                h2 Create room
+                form(action='/room', method='post')
+                    .form-group
+                        label(for='title') Title
+                        input#title.form-control(type='text', name="title", placeholder='Title', autocomplete="off")
+
+                    button.btn.btn-primary(type='submit') Save
+                    button.btn(type="reset") Cancel
+                - }
+
+            aside.col-md-4
+                h3 Navigation
+                ul
+                    li
+                        a(href="/") Home
+                    li
+                        a(href="/room") Rooms
+                    li
+                        a(href="/potation") Potations
+                    //- li
+                    //-     a(href="/customer") Customers
+                    li
+                        a(href="/csv") CSV export
+        - if(!doc){
+            .row
+                .col-md-12
+                    h2 Room list
+                    - if (rooms.length)
+                        table(class="table table-hover")
+                            thead
+                                tr
+                                    th(data-field='id')
+                                        .th-inner
+                                            | Order number
+                                        .fht-cell
+                                    th(data-field='id')
+                                        .th-inner
+                                            | Room name
+                                        .fht-cell
+                                    th(data-field='name')
+                                        .th-inner
+                                                | Edit
+                                        .fht-cell
+                                    th(data-field='price')
+                                        .th-inner
+                                            | Delete
+                                        .fht-cell
+                            tbody
+                            - rooms.forEach(function(room, i){
+                                tr()
+                                    td.td-class-1= i + 1
+                                    td= room.title
+                                    td
+                                        a(href="/room/#{room._id}/edit") Edit
+                                    td
+                                        button(type="button", class="btn btn-primary", data-toggle='modal', data-target='#delete-modal', data-url="/room/#{room._id}") Delete
+                            - })
+                    - else
+                        p No registered members yet.
+        -}
+    footer
+        p &copy; <a href="#">Dua Leo</a> 2015 - MIT licence

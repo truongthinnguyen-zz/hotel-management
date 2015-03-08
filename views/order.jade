@@ -1,0 +1,70 @@
+.container
+    .content
+        header.page-header
+           h1 Dua Leo
+                small.subtitle  Hotel
+        .row
+            article.col-md-8
+                - if (errors.length)
+                    - errors.forEach(function(error){
+                        .alert.alert-danger(role="alert")= error
+                    - })
+                - if (messages.length)
+                    - messages.forEach(function(message){
+                        .alert.alert-success(role="alert")= message
+                    - })
+
+                h2 Add new potation
+                form(action='/order', method='post')
+                    .form-group
+                        label(for='checkin') Gio vao
+                        input#checkin.form-control(type='text', name="checkin", placeholder='Checkin', autocomplete="off", required="required")
+                    .form-group
+                        label(for='checkout') Gio ra
+                        input#checkout.form-control(type='text', name="checkout", placeholder='Checkout', autocomplete="off", required="required")
+                    .form-group
+                        .checkbox
+                            label(for='isovernight')
+                                input#isovernight(type='checkbox', name='isovernight')
+                                |  Qua dem
+                    - if(potations.length){
+                        - potations.forEach(function(potation){
+                            .form-group
+                                label(for='potation#{potation._id}')=potation.title
+                                input.form-control(type='number', name="potation", autocomplete="off", id="potation#{potation._id}")
+                        - })
+                    - }
+                    - if(rooms.length){
+                        .form-group
+                        - rooms.forEach(function(room){
+                            .radio
+                                label
+                                    input(type='radio', name='room', value="#{room._id}")
+                                    | #{room.title}
+                        - })
+                    - }
+                    .form-group
+                        label(for='customer-1') Customer 1
+                        input#customer-1.form-control(type='text', name="customer-1", placeholder='Customer 1', autocomplete="off")
+                    .form-group
+                        label(for='customer-2') Customer 2
+                        input#customer-2.form-control(type='text', name="customer-2", placeholder='Customer 2', autocomplete="off")
+
+                    button.btn.btn-primary(type='submit') Save
+                    button.btn(type="reset") Cancel
+
+            aside.col-md-4
+                h3 Navigation
+                ul
+                    li
+                        a(href="/") Home
+                    li
+                        a(href="/room") Rooms
+                    li
+                        a(href="/potation") Potations
+                    //- li
+                    //-     a(href="/customer") Customers
+                    li
+                        a(href="/csv") CSV export
+    footer
+        p &copy; <a href="#">Dua Leo</a> 2015 - MIT licence

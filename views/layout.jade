@@ -1,0 +1,53 @@
+doctype
+html
+    head
+        title= title
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+        //- link(rel='stylesheet', href='/stylesheets/styles.css')
+        //if lt IE 9
+            script(src="http://html5shim.googlecode.com/svn/trunk/html5.js", language="text/javascript")
+    body!= body
+        #delete-modal.modal.fade(role='dialog', aria-labelledby='delete-label', aria-hidden='true')
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                        h4#delete-label.modal-title Do you want to delete?
+                  .modal-body
+                        | ...
+                  .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
+                        button.btn.btn-primary(type='button') Delete
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js")
+        script.
+            $(document).ready(function(){
+                var deleteModal = $('#delete-modal'),
+                    modalBody = $('.modal-body', deleteModal);
+                deleteModal.on('show.bs.modal', function(e){
+                    var target = $(e.relatedTarget);
+                    $('.btn-primary', deleteModal).off('click').on('click', function(){
+                        console.log(target.data('url'));
+                        $.ajax({
+                            url: target.data('url'),
+                            type: 'DELETE',
+                            success: function(res){
+                                if(res === "true"){
+                                    deleteModal.modal('hide');
+                                    target.closest('tr').fadeOut(function(){
+                                        $(this).remove();
+                                    });
+                                }
+                            },
+                            error: function(){
+                                modalBody.text('Can\'t delete this item, please try later!');
+                                setTimeout(function(){
+                                    deleteModal.modal('hide');
+                                }, 2000);
+                            }
+                        });
+                    });
+                });
+            });
+

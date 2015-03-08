@@ -1,0 +1,113 @@
+.container
+    .content
+        header.page-header
+           h1 Dua Leo
+                small.subtitle  Hotel
+        .row
+            article.col-md-8
+                - if (errors.length)
+                    - errors.forEach(function(error){
+                        .alert.alert-danger(role="alert")= error
+                    - })
+                - if (messages.length)
+                    - messages.forEach(function(message){
+                        .alert.alert-success(role="alert")= message
+                    - })
+
+                - if (doc){
+                h2 Edit customer information
+                form(action='/customer', method='post')
+                    .form-group
+                        label(for='fullname') Fullname
+                        input#fullname.form-control(type='text', name="title", placeholder='Fullname', autocomplete="off", required="required", value="#{doc.fullname}")
+                    .form-group
+                        label(for='identifycard') Identify card
+                        input#identifycard.form-control(type='number', name="identifycard", placeholder='Identify card', autocomplete="off", value="#{doc.identifycard}")
+                    .form-group
+                        label(for='phonenumber') Fullname
+                        input#phonenumber.form-control(type='text', name="phonenumber", placeholder='Phone number', autocomplete="off", value="#{doc.phonenumber}")
+                    .form-group
+                        label(for='email') Email
+                        span.add-on @
+                        input#email.form-control(type='email', name="email", placeholder='Email', autocomplete="off", value="#{doc.email}")
+
+                    button.btn.btn-primary(type='submit') Save
+                    button.btn(type="reset") Cancel
+                - } else {
+                h2 Add new customer information
+                form(action='/customer', method='post')
+                    .form-group
+                        label(for='fullname') Fullname
+                        input#fullname.form-control(type='text', name="title", placeholder='Fullname', autocomplete="off", required="required")
+                    .form-group
+                        label(for='identifycard') Identify card
+                        input#identifycard.form-control(type='number', name="identifycard", placeholder='Identify card', autocomplete="off")
+                    .form-group
+                        label(for='phonenumber') Fullname
+                        input#phonenumber.form-control(type='text', name="phonenumber", placeholder='Phone number', autocomplete="off")
+                    .form-group
+                        label(for='email') Email
+                        input#email.form-control(type='email', name="email", placeholder='Email', autocomplete="off")
+
+                    button.btn.btn-primary(type='submit') Save
+                    button.btn(type="reset") Cancel
+                - }
+
+            aside.col-md-4
+                h3 Navigation
+                ul
+                    li <a href="/room">Rooms</a>
+                    li <a href="/potation">Potations</a>
+                    li <a href="/customer">Customers</a>
+                    li <a href="/csv">CSV export</a>
+        - if(!doc){
+            .row
+                .col-md-12
+                    h2 Customer list
+                    - if (customers.length)
+                        table(class="table table-hover")
+                            thead
+                                tr
+                                    th(data-field='id')
+                                        .th-inner
+                                            | Order number
+                                        .fht-cell
+                                    th(data-field='fullname')
+                                        .th-inner
+                                            | Fullname
+                                        .fht-cell
+                                    th(data-field='identifycard')
+                                        .th-inner
+                                            | Identify card
+                                        .fht-cell
+                                    th(data-field='phonenumber')
+                                        .th-inner
+                                            | Phone number
+                                        .fht-cell
+                                    th(data-field='email')
+                                        .th-inner
+                                            | Email
+                                        .fht-cell
+                                    th(data-field='edit')
+                                        .th-inner
+                                                | Edit
+                                        .fht-cell
+                                    th(data-field='delete')
+                                        .th-inner
+                                            | Delete
+                                        .fht-cell
+                            tbody
+                            - customers.forEach(function(customer, i){
+                                tr()
+                                    td.td-class-1= i + 1
+                                    td= customer.title
+                                    td
+                                        a(href="/customer/#{customer._id}/edit") Edit
+                                    td
+                                        a(href="#") Delete
+                            - })
+                    - else
+                        p No customers yet.
+        -}
+    footer
+        p &copy; <a href="#">Dua Leo</a> 2015 - MIT licence

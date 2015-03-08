@@ -1,0 +1,126 @@
+- types = [{"key": 1, "name": "Potation"}, {"key": 2, "name": "Room"}]
+.container
+    .content
+        header.page-header
+           h1 Dua Leo
+                small.subtitle  Hotel
+        .row
+            article.col-md-8
+                - if (errors.length)
+                    - errors.forEach(function(error){
+                        .alert.alert-danger(role="alert")= error
+                    - })
+                - if (messages.length)
+                    - messages.forEach(function(message){
+                        .alert.alert-success(role="alert")= message
+                    - })
+
+                - if (doc){
+                h2 Edit potation information
+                form(action='/potation/#{doc._id}/edit', method='post')
+                    .form-group
+                        label(for='title') Title
+                        input#title.form-control(type='text', name="title", placeholder='Title', autocomplete="off", required="required", value="#{doc.title}")
+                    .form-group
+                        label(for='price') Price
+                        input#price.form-control(type='number', name="price", placeholder='Price', autocomplete="off", required="required", value="#{doc.price}")
+                    .form-group
+                        label(for='type') Type
+                        select#type(name="type")
+                            - for(var i = 0; i < types.length; i++){
+                                - if (types[i].key === doc.type){
+                                    option(value="#{types[i].key}", selected="true")=types[i].name
+                                -}
+                                -else{
+                                    option(value="#{types[i].key}")=types[i].name
+                                -}
+                            - }
+                    button.btn.btn-primary(type='submit') Save
+                    button.btn(type="reset") Cancel
+                - } else {
+                h2 Add new potation
+                form(action='/potation', method='post')
+                    .form-group
+                        label(for='title') Title
+                        input#title.form-control(type='text', name="title", placeholder='Title', autocomplete="off", required="required")
+                    .form-group
+                        label(for='price') Price
+                        input#price.form-control(type='number', name="price", placeholder='Price', autocomplete="off", required="required")
+                    .form-group
+                        label(for='type') Type
+                        select#type(name="type")
+                            option(value="1") Potation
+                            option(value="2") Room
+
+                    button.btn.btn-primary(type='submit') Save
+                    button.btn(type="reset") Cancel
+                - }
+
+            aside.col-md-4
+                h3 Navigation
+                ul
+                    li
+                        a(href="/") Home
+                    li
+                        a(href="/room") Rooms
+                    li
+                        a(href="/potation") Potations
+                    //- li
+                    //-     a(href="/customer") Customers
+                    li
+                        a(href="/csv") CSV export
+        - if(!doc){
+            .row
+                .col-md-12
+                    h2 Potation list
+                    - if (potations.length)
+                        table(class="table table-hover")
+                            thead
+                                tr
+                                    th(data-field='id')
+                                        .th-inner
+                                            | Order number
+                                        .fht-cell
+                                    th(data-field='title')
+                                        .th-inner
+                                            | Title
+                                        .fht-cell
+                                    th(data-field='price')
+                                        .th-inner
+                                            | Price
+                                        .fht-cell
+                                    th(data-field='type')
+                                        .th-inner
+                                            | Type
+                                        .fht-cell
+                                    th(data-field='edit')
+                                        .th-inner
+                                                | Edit
+                                        .fht-cell
+                                    th(data-field='delete')
+                                        .th-inner
+                                            | Delete
+                                        .fht-cell
+                            tbody
+                            - potations.forEach(function(potation, i){
+                                tr
+                                    td.td-class-1= i + 1
+                                    td= potation.title
+                                    td= potation.price
+                                    td
+                                        -if (potation.type === 1){
+                                            | Potation
+                                        -} else {
+                                            | Room
+                                        -}
+
+                                    td
+                                        a(href="/potation/#{potation._id}/edit") Edit
+                                    td
+                                        button(type="button", class="btn btn-primary", data-toggle='modal', data-target='#delete-modal', data-url="/potation/#{potation._id}") Delete
+                            - })
+                    - else
+                        p No potations yet.
+        -}
+    footer
+        p &copy; <a href="#">Dua Leo</a> 2015 - MIT licence
