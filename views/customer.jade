@@ -56,10 +56,18 @@
             aside.col-md-4
                 h3 Navigation
                 ul
-                    li <a href="/room">Rooms</a>
-                    li <a href="/potation">Potations</a>
-                    li <a href="/customer">Customers</a>
-                    li <a href="/csv">CSV export</a>
+                    li
+                        a(href="/") Home
+                    li
+                        a(href="/room") Rooms
+                    li
+                        a(href="/potation") Potations
+                    li
+                        a(href="/order") Orders
+                    //- li
+                    //-     a(href="/customer") Customers
+                    li
+                        a(href="/csv") CSV export
         - if(!doc){
             .row
                 .col-md-12
