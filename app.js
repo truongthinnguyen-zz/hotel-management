@@ -68,5 +68,7 @@ app.get('/list', routes.list);
 app.get('/csv', routes.csv);
 
 // Open App socket
-app.listen(3003);
+var port = process.env.PORT || 8080;
+app.listen(port);
+
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
