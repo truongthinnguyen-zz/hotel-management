@@ -22,9 +22,40 @@ exports.index = function(req, res){
 
 // Home page => room form
 exports.room = function(req, res){
-    //res.render('room.jade', { title: 'Dua Leo Hotel', messages: [], errors: [] });
+    console.log( req.xhr);
+    var tpl = "<a id=\"{{id}}\" class=\"small-room black\" href=\"javascript:void(0)\" data-toggle=\"modal\" data-target=\".modal-{{id}}\">" +
+                    "<div class=\"small-visual\">" +
+                        "<i class=\"fa fa-bed\"></i>" +
+                    "</div>" +
+                    "<div class=\"small-visual-light\">" +
+                        "<i id=\"small-light1\" class=\"fa fa-lightbulb-o\"></i>" +
+                    "</div>" +
+
+                    "<div class=\"small-roomname\">{{title}}</div>" +
+                    "<div id=\"smallCash\" class=\"small-cash\">--- ---</div>" +
+                    "<div id=\"smallTime\" class=\"small-time\">--- ---</div>" +
+                "</a>";
+
     roomModel.find({}, function(err, docs){
-        res.render('room.jade', { title: 'Dua Leo Hotel - Room', messages: [], errors: [], rooms: docs });
+        if(req.xhr){
+            if(err){
+                res.end("<p>Có lỗi xảy ra, vui lòng thử lại sau.</p>");
+            }
+            if(docs.length){
+                var html = '';
+                for(var i = 0; i < docs.length; i++){
+                    var doc = docs[i];
+                    html += tpl.replace(/{{id}}/g, doc._id).replace(/{{title}}/g, doc.title);
+                }
+                res.end(html);
+            }
+            else{
+                res.end("<p>Hiện tại khách sạn chưa có phòng nào</p>");
+            }
+        }
+        else{
+            res.render('room.jade', { title: 'Dua Leo Hotel - Room', messages: [], errors: [], rooms: docs });
+        }
     });
 };
 
