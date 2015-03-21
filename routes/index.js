@@ -22,6 +22,7 @@ exports.index = function(req, res){
 
 // Home page => room form
 exports.room = function(request, response){
+    console.log('referer: '+request.headers['referer']);
     var tpl = "<a id=\"{{id}}\" class=\"small-room black\" href=\"javascript:void(0)\" data-toggle=\"modal\" data-target=\".modal-{{id}}\">" +
                 "<div class=\"small-visual\">" +
                     "<i class=\"fa fa-bed\"></i>" +
