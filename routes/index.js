@@ -38,7 +38,7 @@ exports.room = function(request, response){
 
     roomModel.find({}, function(err, docs){
         if(request.headers['referer']){
-            res.render('room.jade', { title: 'Dua Leo Hotel - Room', messages: [], errors: [], rooms: docs });
+            response.render('room.jade', { title: 'Dua Leo Hotel - Room', messages: [], errors: [], rooms: docs });
         }
         else{
             var origin = (request.headers.origin || "*");
